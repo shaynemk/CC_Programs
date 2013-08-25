@@ -1,4 +1,4 @@
-Skynet_CC
+CC_Programs
 =========
 
-My take on a networking algorithm using ComputerCraft for Minecraft.
+A repository for storing my ComputerCraft (for Minecraft) creations.
