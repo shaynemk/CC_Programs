@@ -1,0 +1,125 @@
+----- includes/declarations
+--neighbors_file = fs.open("neighbors",r)
+
+-- config declarations
+
+MAX_NEIGHBORS = 30
+MAX_NODES_PER_NEIGHBOR = 30
+NEIGHBOR_NODE_SEPARATOR = "|"
+NODE_NODE_SEPARATOR = ","
+
+DEBUG_ENABLED = TRUE
+
+-- end config
+
+NEIGHBORS_TABLE = {self = os.getComputerID()}
+--[ ID indexes in table
+[1   = first neighborID
+[2   = second neighborID
+...
+--]
+
+NODES_TABLE = {}
+--[
+// if node doesnt need a relay, then both are same.
+// else, next_neighbor is the next hop towards
+// our destination_node.
+destination_node = next_neighbor
+--]
+
+----- support functions
+
+-- function check time
+   currentTime = os.clock()
+
+-- send neighbors (deprecated?)
+function send_neighbors(requestingID)
+   neighbors_string = textutils.serialize(NEIGHBORS_TABLE)
+   rednet.send(requestingID,"sending_neighbors")
+   rednet.send(requestingID,neighbors_string)
+   id, msg, dist = rednet.receive(5)
+
+   -- debug
+   if DEBUG_ENABLED == TRUE then
+      if msg == "received_table" then print("send neighbor table success") end
+   end
+end
+
+-- receive neighbors (deprecated?)
+function receive_neighbors()
+   id, msg, dist = rednet.receive(10)
+   if msg == NIL then
+     print("receive neighbor table timeout")
+     --if DEBUG_ENABLED == TRUE then print("receive neighbor table timeout") end
+   else if msg == "sending_neighbors" then
+      print("receiving neighbor table from id#"..id.."...")
+
+      new_neighbors_string = rednet.receive(10)
+      if new_neighbors_string == nil then
+         print("error receiving neighbor string from id#"..id..".")
+      else
+         new_neighors_table = textutils.unserialize(new_neighbors_string)
+      end
+
+   -- debug: show new neighbor table
+      if DEBUG_ENABLED == TRUE then
+         print("new neighbors table:")
+         for key,value in pairs(new_neighbors_table) do print(key,value) end
+      end
+
+      NEIGHBORS_TABLE = new_neighbors_table
+   end
+end
+
+-- send nodes
+function send_nodes()
+end
+
+-- receive nodes
+function receive_nodes(nodeID)
+   nNodes = 
+end
+
+-- build nodes
+function build_nodes()
+   rednet.broadcast("youareanode")
+   
+end
+
+-- build neighbors table (deprecated?)
+function build_neighbors()
+end
+
+-- function dump array to file   
+   -- open file as write
+   neighbors = fs.open("neighbors",w)
+
+   for x = 1,MAX_NEIGHBORS do
+      for y = 1,MAX_NODES_PER_NEIGHBOR do
+         
+
+-- function create_neighbors()
+   -- open file
+   --neighbors_file = fs.open("neighbors",w)
+
+   rednet.broadcast("whoismyneighbor")
+   -- os.pullEvent("rednet_message")
+   local id, message, distance = rednet.receive(5)
+   if message == "iamyourneighbor" then
+      
+   end
+
+-- function update routing table
+   check_time() -- see how long its been since last update
+   poll_nearby() -- announce, and see who is nearby
+
+-------- main()
+
+-- update routing tables on startup
+
+-- loop always, waiting for rednet message
+
+   -- wait for rednet message
+      -- what is the message?
+         -- do things based on message received
+
